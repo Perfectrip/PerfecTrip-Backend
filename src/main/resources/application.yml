@@ -18,8 +18,8 @@ spring:
 
 #mybatis setting
 mybatis:
-  mapper-locations: mappers/**/*.xml
-  type-aliases-package: com.ssafy.*.model
+  mapper-locations: mapper/**/*.xml
+  type-aliases-package: com.ssafy.**.model
 
  
 # logging

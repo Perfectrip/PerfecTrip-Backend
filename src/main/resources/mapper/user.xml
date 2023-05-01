@@ -5,61 +5,62 @@
 <mapper namespace="com.ssafy.enjoytrip.user.model.mapper.UserMapper">
 
 	<resultMap type="userDto" id="user">
-		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
 	</resultMap>
 	
 	<!-- ADMIN -->
-	<resultMap type="memberDto" id="memberAll" extends="member">
-		<result column="user_password" property="userPwd"/>
-		<result column="email_id" property="emailId"/>
-		<result column="email_domain" property="emailDomain"/>
-		<result column="join_date" property="joinDate"/>
+	<resultMap type="userDto" id="userAll" extends="user">
+		<result column="password" property="password"/>
+		<result column="email" property="email"/>
+		<result column="age" property="age"/>
 	</resultMap>
 
 	<select id="idCheck" parameterType="String" resultType="int">
-		select count(user_id)
-		from members
-		where user_id = #{userid}
+		select count(id)
+		from user
+		where id = #{id}
+		<!-- @PathVariable("id") String id : path안에 있는 값이 #안에 들어간다 -->
 	</select>
 
-	<insert id="joinMember" parameterType="memberDto">
-		insert into members (user_name, user_id, user_password, email_id, email_domain, join_date)
-		values (#{userName}, #{userId}, #{userPwd}, #{emailId}, #{emailDomain}, now())
+	<insert id="joinUser" parameterType="userDto">
+		insert into user (id, password, email, name, age)
+		values (#{id}, #{password}, #{email}, #{name}, #{age})
 	</insert>
 
-	<select id="loginMember" parameterType="map" resultMap="member">
-		select user_id, user_name
-		from members
-		where user_id = #{userid} and user_password = #{userpwd}
+	<select id="loginUser" parameterType="map" resultMap="user">
+		select id, name
+		from user
+		where id = #{id} and password = #{password}
 	</select>
 	
 	<!-- ADMIN -->
-	<select id="listMember" resultMap="memberAll">
+	<!-- <select id="listMember" resultMap="memberAll">
 		select user_name, user_id, user_password, email_id, email_domain, join_date
 		from members
 		order by join_date
-	</select>
+	</select> -->
 	
-	<select id="getMember" parameterType="string" resultMap="memberAll">
+	<!-- <select id="getMember" parameterType="string" resultMap="memberAll">
 		select user_id, user_name, user_password, email_id, email_domain, join_date
 		from members
 		where user_id = #{userId}
-	</select>
+	</select> -->
 	
-	<update id="updateMember" parameterType="memberDto">
-		update members
+	<update id="updateUser" parameterType="userDto">
+		update user
 		<trim prefix="set" suffixOverrides=",">
-			<if test="userPwd != null">user_password = #{userPwd},</if>
-			<if test="emailId != null">email_id = #{emailId},</if>
-			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+			<if test="password != null">password = #{password},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="age != null">age = #{age},</if>
 		</trim>
-		where user_id = #{userId}
+		where id = #{id}
 	</update>
 	
-	<delete id="deleteMember" parameterType="String">
-		delete from members
-		where user_id = #{userId}
+	<delete id="deleteUser" parameterType="String">
+		delete from user
+		where id = #{id}
 	</delete>
 	
 </mapper>
