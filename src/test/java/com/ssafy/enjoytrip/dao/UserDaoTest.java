@@ -62,18 +62,34 @@ public class UserDaoTest {
 	@Transactional
 	public void testInsert() throws SQLException {
 		//before : user data 생성
-		UserDto user = new UserDto("testId", "1234", "test@test.com", "testName", 10); 
+		UserDto user = new UserDto("test123", "1234", "test@test.com", "testName", 10); 
 		
 		//when 
 		userMapper.joinUser(user);
-		user = userMapper.loginUser("testId");
+		user = userMapper.loginUser("test123"); // id와 이름만 반환함
+		
+		int cnt = userMapper.idCheck("testId");
 		//then
 		assertNotNull(user);
 		assertEquals(user.getName(), "testName");
+		assertEquals(user.getId(), "test123");
+		
+		user = userMapper.getUser("test123");
+		assertNotNull(user);
+		assertEquals(user.getId(), "test123");
+		assertEquals(user.getPassword(), "1234");
+		assertEquals(user.getEmail(), "test@test.com");
+		assertEquals(user.getName(), "testName");
 		assertEquals(user.getAge(), 10);
+		
+		// 중복 아이디 검사
+		assertEquals(cnt, 1);
 //		
 //		bookDao.delete("isbn");
 //		book = bookDao.findByIsbn("isbn");
 //		assertNull(book);
 	}
+    
+    
+    
 }

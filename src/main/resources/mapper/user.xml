@@ -28,10 +28,10 @@
 		values (#{id}, #{password}, #{email}, #{name}, #{age})
 	</insert>
 
-	<select id="loginUser" parameterType="map" resultMap="user">
+	<select id="loginUser" parameterType="String" resultMap="user">
 		select id, name
 		from user
-		where id = #{id} and password = #{password}
+		where id = #{id}
 	</select>
 	
 	<!-- ADMIN -->
@@ -41,11 +41,11 @@
 		order by join_date
 	</select> -->
 	
-	<!-- <select id="getMember" parameterType="string" resultMap="memberAll">
-		select user_id, user_name, user_password, email_id, email_domain, join_date
-		from members
-		where user_id = #{userId}
-	</select> -->
+	<select id="getUser" parameterType="String" resultMap="userAll">
+		select id, password, email, name, age
+		from user
+		where id = #{id}
+	</select>
 	
 	<update id="updateUser" parameterType="userDto">
 		update user
