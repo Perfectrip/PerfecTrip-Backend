@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
@@ -41,26 +42,22 @@ public class UserDaoTest {
 	
 	@BeforeClass
 	public static void beforeClass() {
-		//System.out.println("----- Class Test Start!!! -----");
 		logger.debug("----- Class Test Start!!! -----");
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		//System.out.println("----- Class Test End!!! -----");
 		logger.debug("----- Class Test End!!! -----");
 	}
 
 	@Before
 	public void beforeMethod() {
-		//System.out.println("----- Method Test Start!!! -----");
 		logger.debug("----- Method Test Start!!! -----");
 	}
 
 	@After
 	public void afterMethod() {
-		//System.out.println("----- Method Test Snd!!! -----");
-		logger.debug("----- Method Test Snd!!! -----");
+		logger.debug("----- Method Test End!!! -----");
 	}
 	
 	@Autowired
@@ -79,7 +76,7 @@ public class UserDaoTest {
 	 * 테스트 후 다시 DB를 원래대로 돌리기 위해  @Transactional을 선언
      * @throws SQLException 
 	 */
-    
+    @Ignore
     @Test
 	@Transactional
 	public void 유저등록테스트() throws SQLException {
@@ -109,7 +106,6 @@ public class UserDaoTest {
 //		assertNull(book);
 	}
     
-    
     @Ignore
     @Test
 	@Transactional
@@ -120,5 +116,32 @@ public class UserDaoTest {
 		
 		//then
 		assertEquals(cnt, 1);
+		//assertTrue(cnt==1);
+	}
+    
+    @Ignore
+    @Test
+	@Transactional
+	public void 유저업데이트테스트() throws SQLException {
+    	//before : user data 생성
+    	UserDto user = new UserDto("ssafy", "$2a$10$5d.Wkvg/rYr/PY2dkmjlIuPhGMDk52.7SHJHiYys3Zy8.91MpPUbe", "ssafy@ssafy.com", "김싸피", 21); 
+    	//when 
+		userMapper.updateUser(user);
+		
+		//then
+		assertEquals(userMapper.getUser("ssafy").getAge(), 21);
+		
+	}
+    
+    @Test
+//	@Transactional
+	public void 유저삭제테스트() throws SQLException { 
+    	//when 
+		userMapper.deleteUser("admin");
+		
+		//then
+		int cnt = userMapper.idCheck("admin");
+		assertEquals(cnt, 0);
+		
 	}
 }

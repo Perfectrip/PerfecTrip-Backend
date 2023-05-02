@@ -10,10 +10,12 @@ import com.ssafy.enjoytrip.user.model.UserDto;
 public interface UserMapper {
 	int idCheck(String id) throws SQLException;
 
+	// 이메일 중복 체크 메소드 추가
+
 	int joinUser(UserDto userDto) throws SQLException;
 
 	UserDto loginUser(String userId) throws SQLException;
-	
+
 	UserDto getUser(String userId) throws SQLException;
 
 	void updateUser(UserDto userDto) throws SQLException;
