@@ -25,18 +25,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int joinUser(UserDto userDto) throws Exception {
+	public void joinUser(UserDto userDto) throws Exception {
 		userDto.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt()));
-		return userMapper.joinUser(userDto);
+		userMapper.joinUser(userDto);
 	}
 
 	@Override
 	public UserDto loginUser(String userId, String userPwd) throws Exception {
 		UserDto userDto = userMapper.loginUser(userId);
 		if (userDto != null && BCrypt.checkpw(userPwd, userDto.getPassword())) {
-			return userDto;
+			return userDto; // id, name 만 있는 userDto
 		}
 		return null;
+	}
+
+	@Override
+	public UserDto getUser(String userId) throws Exception {
+		return userMapper.getUser(userId); // 모든 정보를 담고 있는 UserDto
 	}
 
 	@Override
