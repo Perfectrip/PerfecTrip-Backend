@@ -37,19 +37,19 @@
 		where ai.content_id = ad.content_id
 		and ai.addr1 like concat('%', (select sido_name from sido where sido_code = #{sidoCode}), '%')
 		and ai.addr1 like concat('%', (select gugun_name from gugun where gugun_code = #{gugunCode} and sido_code = #{sidoCode}), '%')
-		<if test="${contentTypeId} != 100">
+		<if test="contentTypeId != 100">
 			and ai.content_type_id = #{contentTypeId}
 		</if>
 	</select>
 	
-	<!-- <select id="searchAttractionByKeyword" resultMap="attractionAll">
+	<select id="searchAttractionByKeyword" resultMap="attractionAll">
 		select ai.content_id, ai.content_type_id, ai.title, ai.addr1, ai.zipcode, ai.first_image, ai.first_image2, ai.readcount, ai.latitude, ai.longitude, ad.overview
 		from attraction_info ai, attraction_description ad
 		where ai.content_id = ad.content_id
 		and ai.addr1 like concat('%', (select sido_name from sido where sido_code = #{sidoCode}), '%')
 		and ai.addr1 like concat('%', (select gugun_name from gugun where gugun_code = #{gugunCode} and sido_code = #{sidoCode}), '%')
 		and ai.title like concat('%', #{keyword}, '%')
-	</select> -->
+	</select>
 
 	
 <!-- 	<select id="getUser" parameterType="String" resultMap="userAll">

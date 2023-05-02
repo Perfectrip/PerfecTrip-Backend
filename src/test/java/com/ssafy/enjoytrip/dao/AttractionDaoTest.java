@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.dao;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -10,6 +11,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -18,7 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
+import com.ssafy.enjoytrip.attraction.model.AttractionDto;
+import com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,17 +51,28 @@ private static final Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
 	@Autowired
     DataSource ds;
     @Autowired
-    UserMapper userMapper;
+    AttractionMapper attractionMapper;
     
     @Test
 	public void testBeanCreation() {
 		assertNotNull(ds);
-		assertNotNull(userMapper);
+		assertNotNull(attractionMapper);
 	}
     
     @Test
     public void 지역별여행지검색테스트() throws SQLException {
-    	
+    	List<AttractionDto> list = attractionMapper.searchAttractionBySidoAndGugunAndContentTypeId(1, 1, 12);
+    	for(AttractionDto ad : list) {
+    		logger.debug(ad.toString());
+    	}
+    }
+    
+    @Test
+    public void 키워드검색테스트() throws SQLException {
+    	List<AttractionDto> list = attractionMapper.searchAttractionByKeyword(1, 1, "공원");
+    	for(AttractionDto ad : list) {
+    		logger.debug(ad.toString());
+    	}
     }
 
 }

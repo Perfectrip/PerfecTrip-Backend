@@ -19,7 +19,8 @@ spring:
 #mybatis setting
 mybatis:
   mapper-locations: mapper/*.xml
-  type-aliases-package: com.ssafy.enjoytrip.attraction.model, com.ssafy.enjoytrip.user.model
+#  type-aliases-package: com.ssafy.enjoytrip.attraction.model, com.ssafy.enjoytrip.user.model
+  type-aliases-package: com.ssafy.enjoytrip.*.model
 
  
 # logging
