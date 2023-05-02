@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto loginUser(String userId, String userPwd) throws Exception {
 		UserDto userDto = userMapper.loginUser(userId);
-		if (userDto != null && BCrypt.checkpw(userPwd, userDto.getPassword())) {
+		if (userDto != null && BCrypt.checkpw(userPwd, userMapper.getUser(userId).getPassword())) {
 			return userDto; // id, name 만 있는 userDto
 		}
 		return null;

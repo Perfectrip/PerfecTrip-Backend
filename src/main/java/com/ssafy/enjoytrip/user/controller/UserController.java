@@ -47,8 +47,9 @@ public class UserController {
 	@GetMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param){
 		try {
-			userService.loginUser(param.get("id"), param.get("password"));
-			return new ResponseEntity<String>("로그인 완료!!!", HttpStatus.OK);
+			UserDto result = userService.loginUser(param.get("id"), param.get("password"));
+			
+			return new ResponseEntity<UserDto>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("로그인 실패!!!", HttpStatus.NOT_ACCEPTABLE);
 		}
