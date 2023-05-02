@@ -26,6 +26,6 @@ mybatis:
 logging:
   level: 
     root: info
-    com.ssafy.ws.step3: debug
+    com.ssafy.enjoytrip: debug
 
     

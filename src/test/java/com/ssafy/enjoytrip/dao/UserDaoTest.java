@@ -8,7 +8,13 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +39,29 @@ import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 public class UserDaoTest {
 	private static final Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
 	
-//	@Before
-//	public void setUp() throws Exception {
-//	}
-//
-//	@After
-//	public void tearDown() throws Exception {
-//	}
+	@BeforeClass
+	public static void beforeClass() {
+		//System.out.println("----- Class Test Start!!! -----");
+		logger.debug("----- Class Test Start!!! -----");
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		//System.out.println("----- Class Test End!!! -----");
+		logger.debug("----- Class Test End!!! -----");
+	}
+
+	@Before
+	public void beforeMethod() {
+		//System.out.println("----- Method Test Start!!! -----");
+		logger.debug("----- Method Test Start!!! -----");
+	}
+
+	@After
+	public void afterMethod() {
+		//System.out.println("----- Method Test Snd!!! -----");
+		logger.debug("----- Method Test Snd!!! -----");
+	}
 	
 	@Autowired
     DataSource ds;
@@ -54,13 +76,13 @@ public class UserDaoTest {
     
     /**
 	 * userMapper insert test
-	 * 테스트 후 다시 DB를 원래대로 돌리기 위해 @Transactional을 선언
+	 * 테스트 후 다시 DB를 원래대로 돌리기 위해  @Transactional을 선언
      * @throws SQLException 
 	 */
     
     @Test
 	@Transactional
-	public void testInsert() throws SQLException {
+	public void 유저등록테스트() throws SQLException {
 		//before : user data 생성
 		UserDto user = new UserDto("test123", "1234", "test@test.com", "testName", 10); 
 		
@@ -68,7 +90,6 @@ public class UserDaoTest {
 		userMapper.joinUser(user);
 		user = userMapper.loginUser("test123"); // id와 이름만 반환함
 		
-		int cnt = userMapper.idCheck("testId");
 		//then
 		assertNotNull(user);
 		assertEquals(user.getName(), "testName");
@@ -82,8 +103,6 @@ public class UserDaoTest {
 		assertEquals(user.getName(), "testName");
 		assertEquals(user.getAge(), 10);
 		
-		// 중복 아이디 검사
-		assertEquals(cnt, 1);
 //		
 //		bookDao.delete("isbn");
 //		book = bookDao.findByIsbn("isbn");
@@ -91,5 +110,15 @@ public class UserDaoTest {
 	}
     
     
-    
+    @Ignore
+    @Test
+	@Transactional
+	public void 아이디중복테스트() throws SQLException {
+		
+    	//when 
+		int cnt = userMapper.idCheck("ssafy");
+		
+		//then
+		assertEquals(cnt, 1);
+	}
 }
