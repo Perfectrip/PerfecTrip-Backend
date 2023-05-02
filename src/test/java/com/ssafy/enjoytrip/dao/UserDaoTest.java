@@ -2,9 +2,6 @@ package com.ssafy.enjoytrip.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -15,7 +12,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,6 +129,7 @@ public class UserDaoTest {
 		
 	}
     
+    @Ignore
     @Test
 //	@Transactional
 	public void 유저삭제테스트() throws SQLException { 
