@@ -1,4 +1,4 @@
-# Enjoy Trip Project [Algorithm DB] 2023.04.14
+# Enjoy Trip Project [Framework] 2023.05.02
 
 ## 팀원
 
@@ -9,17 +9,17 @@
 
 ## 1. 목표
 
-- 서비스 개발에 필요한 DB를 설계할 수 있다.
-- EnjoyTrip 프로젝트의 다양한 서비스에 적용 가능한 DB 스키마를 작성한다.
-- 기존 개발한 프로젝트를 기반으로 도출한 DB 구조를 적용한 서비스를 개발할 수 있다
+- Spring Boot를 활용하여 서비스 구조를 개선할 수 있다.
+- Rest API와 Mybatis를 사용하여 서비스를 개발할 수 있다.
+- 기존 개발한 프로젝트를 기반으로 도출한 DB 구조를 적용한 서비스를 개발할 수 있다.
 
 ---
 
 ## 2. 요구사항
 
-- 요구사항을 분석하고 DB 모델링을 할 수 있다.
-- DB 모델링 된 엔티티를 테이블로 구축할 수 있다.
-- EnjoyTrip 프로젝트의 DB 영역의 역할을 이해하고, DAO 클래스와 DB 데이터를 연동하여 구현할 수 있다.
+- Web MVC Architecture를 이해하고 활용할 수 있다.
+- Spring Framework와 RestAPI를 활용하여 웹 서버를 구축할 수 있다.
+- myBatis Framework를 활용하여 DB를 연동할 수 있다.
 
 ---
 
