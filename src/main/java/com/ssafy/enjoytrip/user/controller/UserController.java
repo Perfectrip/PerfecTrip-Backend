@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.user.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +44,14 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/login/{id}")
-	public void getUser(@PathVariable String id){
-		System.out.println(id);
+	@GetMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param){
+		try {
+			userService.loginUser(param.get("id"), param.get("password"));
+			return new ResponseEntity<String>("로그인 완료!!!", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("로그인 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 	
 }
