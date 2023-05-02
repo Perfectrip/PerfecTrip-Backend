@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,6 @@ import com.ssafy.enjoytrip.attraction.model.service.AttractionService;
 import com.ssafy.enjoytrip.user.controller.UserController;
 import com.ssafy.enjoytrip.user.model.service.UserService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/attraction")
@@ -38,6 +38,7 @@ public class AttractionController {
 	@ResponseBody
 	public ResponseEntity<?> searchType(@RequestBody Map<String, Integer> param){
 		try {
+			System.out.println(param);
 			List<AttractionDto> list = attractionService.searchAttractionBySidoAndGugunAndContentTypeId(param.get("sidoCode"), param.get("gugunCode"), param.get("contentTypeId"));
 			return new ResponseEntity<List>(list, HttpStatus.OK);
 		} catch (Exception e) {
