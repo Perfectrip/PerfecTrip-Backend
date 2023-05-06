@@ -90,7 +90,7 @@
 	</update>
 	
 	<update id="modifyArticle" parameterType="planBoardDto">
-		update board
+		update plan_board
 		set subject = #{subject}, content = #{content}
 		where article_no = #{articleNo}
 	</update>
