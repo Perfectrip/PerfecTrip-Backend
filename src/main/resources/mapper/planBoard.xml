@@ -65,7 +65,7 @@
 	
 	<select id="getTotalArticleCount" parameterType="map" resultType="int">
 		select count(article_no)
-		from board
+		from plan_board
 		<where>
 			<include refid="search"></include>
 		</where>
@@ -91,7 +91,7 @@
 	
 	<update id="modifyArticle" parameterType="planBoardDto">
 		update plan_board
-		set subject = #{subject}, content = #{content}
+		set article_title = #{title}, article_content = #{content}
 		where article_no = #{articleNo}
 	</update>
 	

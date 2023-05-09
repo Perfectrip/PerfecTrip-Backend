@@ -22,7 +22,7 @@ public interface BoardMapper {
 
 	void modifyArticle(PlanBoardDto boardDto) throws SQLException;
 
-	void deleteFile(int articleNo) throws Exception;
+	// void deleteFile(int articleNo) throws Exception;
 
 	void deleteArticle(int articleNo) throws SQLException;
 }
