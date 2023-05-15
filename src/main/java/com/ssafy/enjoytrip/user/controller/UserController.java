@@ -48,7 +48,7 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param, HttpSession session){
 		try {
 			UserDto result = userService.loginUser(param.get("id"), param.get("password"));
