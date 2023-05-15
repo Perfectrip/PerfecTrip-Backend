@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		if (userDto != null && BCrypt.checkpw(userPwd, userMapper.getUser(userId).getPassword())) {
 			return userDto; // id, name 만 있는 userDto
 		}
-		return null;
+		throw new Exception();
 	}
 
 	@Override

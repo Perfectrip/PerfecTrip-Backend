@@ -65,7 +65,7 @@ public class UserController {
 			userService.updateUser(userDto);
 			return new ResponseEntity<String>("업데이트 성공!!!", HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("회원가입 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>("업데이트 실패!!!", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 	
