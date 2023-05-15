@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.board.model.mapper.BoardMapper">
+<mapper namespace="com.ssafy.enjoytrip.planboard.model.mapper.BoardMapper">
 
 	<resultMap type="planBoardDto" id="article">
 		<result column="article_no" property="articleNo"/>
@@ -26,7 +26,7 @@
 
 	<insert id="writeArticle" parameterType="planBoardDto">
 		insert into plan_board(user_id, article_title, plan_order, article_content, view_cnt, register_time) 
-		value(#{userId}, #{articleTitle}, #{planOrder}, #{articleContent}, 0, now());
+		value(#{userId}, #{title}, #{order}, #{content}, 0, now());
 
 		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
 			select last_insert_id()
@@ -65,7 +65,7 @@
 	
 	<select id="getTotalArticleCount" parameterType="map" resultType="int">
 		select count(article_no)
-		from board
+		from plan_board
 		<where>
 			<include refid="search"></include>
 		</where>
@@ -91,7 +91,7 @@
 	
 	<update id="modifyArticle" parameterType="planBoardDto">
 		update plan_board
-		set subject = #{subject}, content = #{content}
+		set article_title = #{title}, article_content = #{content}
 		where article_no = #{articleNo}
 	</update>
 	
