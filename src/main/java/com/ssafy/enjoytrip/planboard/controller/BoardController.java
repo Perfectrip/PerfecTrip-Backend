@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,7 +31,6 @@ import com.ssafy.enjoytrip.planboard.model.PlanBoardDto;
 import com.ssafy.enjoytrip.planboard.model.service.BoardService;
 import com.ssafy.enjoytrip.user.model.UserDto;
 
-
 @RestController
 @RequestMapping("/article")
 @CrossOrigin("*")
@@ -46,8 +46,10 @@ public class BoardController {
 	}
 
 	@PostMapping("/write")
-	public String write(@RequestBody PlanBoardDto boardDto, @RequestParam("upfile") MultipartFile[] files,
-			HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
+//	public String write(@RequestBody PlanBoardDto boardDto, @RequestParam("upfile") MultipartFile[] files,
+//			HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
+	public String write(@RequestBody PlanBoardDto boardDto, HttpSession session, RedirectAttributes redirectAttributes)
+			throws Exception {
 		logger.debug("write boardDto : {}", boardDto);
 		UserDto userDto = (UserDto) session.getAttribute("userinfo");
 		boardDto.setUserId(userDto.getId());
@@ -89,10 +91,10 @@ public class BoardController {
 	@GetMapping("/list")
 	public ResponseEntity<?> list(@RequestParam Map<String, String> map) {
 		logger.debug("list parameter pgno : {}", map.get("pgno"));
-		
+
 		try {
 			List<PlanBoardDto> list = boardService.listArticle(map);
-			if(list != null && !list.isEmpty()) {
+			if (list != null && !list.isEmpty()) {
 				return new ResponseEntity<List<PlanBoardDto>>(list, HttpStatus.OK);
 //				return new ResponseEntity<List<MemberDto>>(HttpStatus.NOT_FOUND);
 			} else {
@@ -109,24 +111,32 @@ public class BoardController {
 //		mav.addObject("word", map.get("word"));
 //		mav.setViewName("board/list");
 	}
+
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping("/view")
-	public ResponseEntity<?> view(@RequestParam("articleno") int articleNo, @RequestParam Map<String, String> map, Model model) {
+	public ResponseEntity<?> view(@RequestParam("articleno") int articleNo, @RequestParam Map<String, String> map) {
 		logger.debug("view articleNo : {}", articleNo);
 		PlanBoardDto boardDto;
 		try {
 			boardDto = boardService.getArticle(articleNo);
 			boardService.updateHit(articleNo);
-			model.addAttribute("article", boardDto);
-			model.addAttribute("pgno", map.get("pgno"));
-			model.addAttribute("key", map.get("key"));
-			model.addAttribute("word", map.get("word"));
 			
-			return new ResponseEntity<String>("조회 성공!!!", HttpStatus.OK);
+			Map<String, Object> result = new HashMap<>();
+			result.put("article", boardDto);
+			
+			result.put("pgno", map.get("pgno"));
+			result.put("key", map.get("key"));
+			result.put("word", map.get("word"));
+//			model.addAttribute("article", boardDto);
+//			model.addAttribute("pgno", map.get("pgno"));
+//			model.addAttribute("key", map.get("key"));
+//			model.addAttribute("word", map.get("word"));
+
+			return new ResponseEntity<Map>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("조회 실패!!!", HttpStatus.NOT_ACCEPTABLE);
 		}

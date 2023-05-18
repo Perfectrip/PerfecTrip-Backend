@@ -8,6 +8,8 @@ public class PlanBoardDto {
 	private String content;
 	private int hit;
 	private String registerTime;
+	
+	
 	public int getArticleNo() {
 		return articleNo;
 	}

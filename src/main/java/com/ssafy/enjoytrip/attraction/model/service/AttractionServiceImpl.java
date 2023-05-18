@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.attraction.model.AttractionDto;
+import com.ssafy.enjoytrip.attraction.model.SidoGugunCodeDto;
 import com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper;
 
 @Service
@@ -17,7 +18,17 @@ public class AttractionServiceImpl implements AttractionService {
 		super();
 		this.attractionMapper = attractionMapper;
 	}
+	
+	@Override
+	public List<SidoGugunCodeDto> getSido() throws Exception {
+		return attractionMapper.getSido();
+	}
 
+	@Override
+	public List<SidoGugunCodeDto> getGugunInSido(String sido) throws Exception {
+		return attractionMapper.getGugunInSido(sido);
+	}
+	
 	@Override
 	public AttractionDto getAttraction(String contentId) throws Exception {
 		return attractionMapper.getAttraction(contentId);

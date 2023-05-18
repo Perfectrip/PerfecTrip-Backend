@@ -48,7 +48,7 @@
 				and article_title like concat('%', #{word}, '%')
 			</if>
 			<if test="key != 'article_title'">
-				and ${key} = #{word}
+				and ${key} like concat('%', #{word}, '%')
 			</if>
 		</if>
 	</sql>
