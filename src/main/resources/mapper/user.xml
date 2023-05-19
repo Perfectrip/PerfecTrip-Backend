@@ -63,4 +63,22 @@
 		where id = #{id}
 	</delete>
 	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set token = #{token}
+		where id = #{id}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set token = #{token, jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+	
 </mapper>

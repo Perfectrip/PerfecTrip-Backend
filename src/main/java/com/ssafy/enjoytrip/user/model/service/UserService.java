@@ -16,4 +16,10 @@ public interface UserService {
 	void deleteUser(String id) throws Exception;
 
 	String findPassword(String id) throws Exception;
+
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
+
+	public Object getRefreshToken(String userid) throws Exception;
+
+	public void deleRefreshToken(String userid) throws Exception;
 }

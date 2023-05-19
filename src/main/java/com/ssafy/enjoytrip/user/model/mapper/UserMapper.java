@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.user.model.mapper;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,4 +24,11 @@ public interface UserMapper {
 	void deleteUser(String id) throws SQLException;
 
 	String findPassword(String id) throws SQLException;
+
+	// 토큰
+	public void saveRefreshToken(Map<String, String> map) throws SQLException;
+
+	public Object getRefreshToken(String userid) throws SQLException;
+
+	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
 }

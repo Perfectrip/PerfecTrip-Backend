@@ -1,5 +1,8 @@
 package com.ssafy.enjoytrip.user.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +63,27 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String findPassword(String id) throws Exception {
 		return userMapper.findPassword(id);
+	}
+	
+	@Override
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("token", refreshToken);
+		userMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String userid) throws Exception {
+		return userMapper.getRefreshToken(userid);
+	}
+
+	@Override
+	public void deleRefreshToken(String userid) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("token", null);
+		userMapper.deleteRefreshToken(map);
 	}
 
 }
