@@ -60,7 +60,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param, HttpSession session){
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
@@ -132,14 +132,26 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/logout")
-	public ResponseEntity<?> logoutUser(HttpSession session){
+	@GetMapping("/logout/{userid}")
+	public ResponseEntity<?> logoutUser(@PathVariable("userid") String userid){
+//		try {
+//			session.removeAttribute("userinfo");
+//			return new ResponseEntity<String>("로그아웃 성공!!!", HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<String>("로그인 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+//		}
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			session.removeAttribute("userinfo");
-			return new ResponseEntity<String>("로그아웃 성공!!!", HttpStatus.OK);
+			userService.deleRefreshToken(userid);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
-			return new ResponseEntity<String>("로그인 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+			logger.error("로그아웃 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	@DeleteMapping("/delete")
