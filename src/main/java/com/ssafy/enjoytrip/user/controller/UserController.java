@@ -178,16 +178,15 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteUser(HttpSession session){
+	@DeleteMapping("/{userid}")
+	public ResponseEntity<?> deleteUser(@PathVariable("userid") @ApiParam(value = "삭제할 글의 글번호.", required = true) String userid){
+		logger.info("deleteUser - 호출");
 		try {
-			userService.deleteUser(((UserDto)session.getAttribute("userinfo")).getId());
-			session.removeAttribute("userinfo");
-			return new ResponseEntity<String>("삭제 성공!!!", HttpStatus.OK);
+			userService.deleteUser(userid);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("삭제 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
 	}
-	
 	
 }
