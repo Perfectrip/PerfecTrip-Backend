@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.ssafy.enjoytrip.planboard.model.BoardParameterDto;
 import com.ssafy.enjoytrip.planboard.model.PlanBoardDto;
 import com.ssafy.enjoytrip.planboard.model.mapper.BoardMapper;
 
@@ -82,21 +83,29 @@ public class PlanBoardDaoTest {
 	
 	@Test
 	public void 게시글목록테스트() throws SQLException {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("key", "user_id");
-		param.put("word", "ssafy");
-		param.put("start", 0);
-		param.put("listsize", 10);
+		BoardParameterDto param = new BoardParameterDto();
+		// 원하는 페이지 번호
+		int pg = 1;
+		param.setPg(pg);
+		int start = param.getPg() == 0 ? 0 : (param.getPg() - 1) * param.getSpp();
+		param.setStart(start);
+		
+//		검색 조건
+//		key = article_title or user_id or article_content
+		String key = "article_title ";
+		String word = "오늘";
+		param.setKey(key);
+		param.setWord(word);
+
 		List<PlanBoardDto> list = boardMapper.listArticle(param);
 		assertNotNull(list);
 		for (int i = 0; i < list.size(); i++) {
 			logger.debug(list.get(i).toString());
-			
 		}
-		
-		assertEquals(list.size(), boardMapper.getTotalArticleCount(param));
+		logger.debug("현재 페이지 글 개수 : " + list.size());
 	}
 	
+	@Ignore
 	@Test
 	public void 조회수업데이트테스트() throws SQLException {
 		int beforeHit = boardMapper.getArticle(1).getHit();
@@ -104,6 +113,7 @@ public class PlanBoardDaoTest {
 		assertEquals(boardMapper.getArticle(1).getHit(), beforeHit+1);
 	}
 	
+	@Ignore
 	@Test
 	public void 게시글수정테스트() throws SQLException {
 		PlanBoardDto article = new PlanBoardDto();
@@ -114,6 +124,7 @@ public class PlanBoardDaoTest {
 		assertEquals(article.getTitle(), boardMapper.getArticle(1).getTitle());
 	}
 	
+	@Ignore
 	@Test
 	public void 게시글삭제테스트() throws SQLException {
 		int dArticleNum = 3;

@@ -23,15 +23,6 @@
 		<result column="original_file" property="originalFile"/>
 		<result column="save_file" property="saveFile"/>
 	</resultMap> -->
-
-	<insert id="writeArticle" parameterType="planBoardDto">
-		insert into plan_board(user_id, article_title, plan_order, article_content, view_cnt, register_time) 
-		value(#{userId}, #{title}, #{order}, #{content}, 0, now());
-
-		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
-			select last_insert_id()
-		</selectKey>
-	</insert>
 	
 	<!-- <insert id="registerFile" parameterType="planBoardDto">
 		insert into file_info (article_no, save_folder, original_file, save_file)
@@ -40,27 +31,45 @@
 			(#{articleNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})
 		</foreach>
 	</insert> -->
+	
+	<insert id="writeArticle" parameterType="planBoardDto">
+		insert into plan_board(user_id, article_title, plan_order, article_content, view_cnt, register_time) 
+		value(#{userId}, #{title}, #{order}, #{content}, 0, now());
+
+		<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
 
 	<sql id="search">
 		<if test="word != null and word != ''">
-			<if test="key == 'article_title'">
+			<if test="key == 'title'">
 				<!-- 안되면 and를 where로 변경해보기 -->
 				and article_title like concat('%', #{word}, '%')
 			</if>
-			<if test="key != 'article_title'">
-				and ${key} like concat('%', #{word}, '%')
+			<if test="key == 'user_id '">
+				<!-- 안되면 and를 where로 변경해보기 -->
+				and user_id like concat('%', #{word}, '%')
+			</if>
+			<if test="key == 'content'">
+				<!-- 안되면 and를 where로 변경해보기 -->
+				and article_content like concat('%', #{word}, '%')
 			</if>
 		</if>
 	</sql>
 
 	<select id="listArticle" parameterType="map" resultMap="article">
-		select article_no, user_id, article_title, plan_order, article_content, view_cnt, register_time
+		select article_no, user_id, article_title, plan_order, article_content, view_cnt,
+		case when date_format(register_time, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(register_time, '%H:%i:%s')
+				else date_format(register_time, '%y.%m.%d')
+				end register_time
 		from plan_board
 		<where>
 			<include refid="search"></include>
 		</where>
 		order by article_no desc
-		limit #{start}, #{listsize}
+		limit #{start}, #{spp}
 	</select>
 	
 	<select id="getTotalArticleCount" parameterType="map" resultType="int">

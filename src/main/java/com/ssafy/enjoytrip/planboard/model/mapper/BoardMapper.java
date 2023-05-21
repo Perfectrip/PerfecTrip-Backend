@@ -6,13 +6,14 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.enjoytrip.planboard.model.BoardParameterDto;
 import com.ssafy.enjoytrip.planboard.model.PlanBoardDto;
 
 @Mapper
 public interface BoardMapper {
-	void writeArticle(PlanBoardDto planBoardDto) throws SQLException;
+	int writeArticle(PlanBoardDto planBoardDto) throws SQLException;
 	
-	List<PlanBoardDto> listArticle(Map<String, Object> param) throws SQLException;
+	List<PlanBoardDto> listArticle(BoardParameterDto boardParameterDto) throws SQLException;
 
 	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
 
@@ -20,9 +21,9 @@ public interface BoardMapper {
 
 	void updateHit(int articleNo) throws SQLException;
 
-	void modifyArticle(PlanBoardDto boardDto) throws SQLException;
+	int modifyArticle(PlanBoardDto boardDto) throws SQLException;
 
 	// void deleteFile(int articleNo) throws Exception;
 
-	void deleteArticle(int articleNo) throws SQLException;
+	int deleteArticle(int articleNo) throws SQLException;
 }
