@@ -47,7 +47,7 @@
 				<!-- 안되면 and를 where로 변경해보기 -->
 				and article_title like concat('%', #{word}, '%')
 			</if>
-			<if test="key == 'user_id '">
+			<if test="key == 'user_id'">
 				<!-- 안되면 and를 where로 변경해보기 -->
 				and user_id like concat('%', #{word}, '%')
 			</if>
