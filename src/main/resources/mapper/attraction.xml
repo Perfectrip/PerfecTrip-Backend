@@ -9,6 +9,8 @@
 		<result column="title" property="title"/>
 		<result column="addr1" property="addr1"/>
 		<result column="first_image" property="firstImage"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
 		<result column="overview" property="overview"/>	
 	</resultMap>
 	
@@ -37,12 +39,12 @@
 		<result column="longitude" property="longitude"/>
 	</resultMap>
 
-	<!-- <select id="getAttraction" parameterType="String" resultType="attraction">
-		select ai.content_id, ai.title, ai.addr1, ai.first_image, ad.overview
+	<select id="getAttraction" parameterType="String" resultMap="attraction">
+		select ai.content_id, ai.title, ai.addr1, ai.first_image, ai.latitude, ai.longitude, ad.overview
 		from attraction_info ai, attraction_description ad
 		where ai.content_id = ad.content_id
 		and ai.content_id = #{contentId}
-	</select> -->
+	</select>
 	
 	<select id="searchAttractionBySidoAndGugunAndContentTypeId" resultMap="attractionAll">
 		select ai.content_id, ai.content_type_id, ai.title, ai.addr1, ai.zipcode, ai.first_image, ai.first_image2, ai.readcount, ai.latitude, ai.longitude, ad.overview
