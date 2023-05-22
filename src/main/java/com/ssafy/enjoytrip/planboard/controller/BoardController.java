@@ -141,9 +141,9 @@ public class BoardController {
 //			redirectAttributes.addAttribute("pgno", map.get("pgno"));
 //			redirectAttributes.addAttribute("key", map.get("key"));
 //			redirectAttributes.addAttribute("word", map.get("word"));
-			return new ResponseEntity<String>("업데이트 성공!!!", HttpStatus.OK);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("업데이트 실패!!!", HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_ACCEPTABLE);
 		}
 
 	}
