@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.enjoytrip.user.model.MailDto;
 import com.ssafy.enjoytrip.user.model.UserDto;
 import com.ssafy.enjoytrip.user.model.service.JwtServiceImpl;
 import com.ssafy.enjoytrip.user.model.service.UserService;
@@ -38,7 +41,7 @@ public class UserController {
 
 	@Autowired
 	private JwtServiceImpl jwtService;
-	
+
 	private UserService userService;
 
 	@Autowired
@@ -50,7 +53,7 @@ public class UserController {
 	public ResponseEntity<?> userJoin(@RequestBody UserDto userDto) {
 
 		logger.debug("유저 등록 UserDto : {}", userDto);
-		
+
 		try {
 			userService.joinUser(userDto);
 			return new ResponseEntity<String>("회원가입 완료!!!", HttpStatus.OK);
@@ -58,20 +61,20 @@ public class UserController {
 			return new ResponseEntity<String>("회원가입 실패!!!", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param){
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
 			UserDto loginUser = userService.loginUser(param.get("userid"), param.get("userpwd"));
 			if (loginUser != null) {
 				String accessToken = jwtService.createAccessToken("userid", loginUser.getId());// key, data
 				String refreshToken = jwtService.createRefreshToken("userid", loginUser.getId());// key, data
-				
+
 				userService.saveRefreshToken(param.get("userid"), refreshToken);
-				
+
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
@@ -92,7 +95,7 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(
@@ -121,9 +124,9 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseEntity<?> updeateUser(@RequestBody UserDto userDto){
+	public ResponseEntity<?> updeateUser(@RequestBody UserDto userDto) {
 		try {
 			userService.updateUser(userDto);
 			return new ResponseEntity<String>("업데이트 성공!!!", HttpStatus.OK);
@@ -131,9 +134,9 @@ public class UserController {
 			return new ResponseEntity<String>("업데이트 실패!!!", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
+
 	@GetMapping("/logout/{userid}")
-	public ResponseEntity<?> logoutUser(@PathVariable("userid") String userid){
+	public ResponseEntity<?> logoutUser(@PathVariable("userid") String userid) {
 //		try {
 //			session.removeAttribute("userinfo");
 //			return new ResponseEntity<String>("로그아웃 성공!!!", HttpStatus.OK);
@@ -153,11 +156,10 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request)
-			throws Exception {
+	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader("refresh-token");
@@ -177,9 +179,10 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@DeleteMapping("/{userid}")
-	public ResponseEntity<?> deleteUser(@PathVariable("userid") @ApiParam(value = "삭제할 글의 글번호.", required = true) String userid){
+	public ResponseEntity<?> deleteUser(
+			@PathVariable("userid") @ApiParam(value = "삭제할 글의 글번호.", required = true) String userid) {
 		logger.info("deleteUser - 호출");
 		try {
 			userService.deleteUser(userid);
@@ -188,5 +191,21 @@ public class UserController {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
+	// 이메일 보내기
+	@Transactional
+	@PutMapping("/findpassword")
+	public ResponseEntity<?> sendEmail(@RequestBody UserDto userDto) throws Exception {
+		String pw = userService.createMailAndChangePassword(userDto.getEmail());
+//        MailDto dto = userService.createMailAndChangePassword(userDto.getEmail()); // or try - catch 사용
+//		logger.debug("보낼 메일 정보 : " + dto);
+
+		if (pw != null) {
+			// 일단 잠정적 폐기...
+			// userService.mailSend(dto);
+			return new ResponseEntity<String>(pw, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
 }

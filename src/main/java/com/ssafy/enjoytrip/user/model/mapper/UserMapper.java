@@ -26,9 +26,11 @@ public interface UserMapper {
 	String findPassword(String id) throws SQLException;
 
 	// 토큰
-	public void saveRefreshToken(Map<String, String> map) throws SQLException;
+	void saveRefreshToken(Map<String, String> map) throws SQLException;
 
-	public Object getRefreshToken(String userid) throws SQLException;
+	Object getRefreshToken(String userid) throws SQLException;
 
-	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
+	void deleteRefreshToken(Map<String, String> map) throws SQLException;
+
+	int updatePassword(Map<String, String> map) throws SQLException;
 }

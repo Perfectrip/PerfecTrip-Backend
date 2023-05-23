@@ -81,4 +81,10 @@
 		where id = #{userid}
 	</update>
 	
+	<update id="updatePassword" parameterType="map">
+		update user
+		set password = #{newPassword}
+		where email = #{userEmail}
+	</update>
+	
 </mapper>

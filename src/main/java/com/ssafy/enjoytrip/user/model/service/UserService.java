@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.user.model.service;
 
+import com.ssafy.enjoytrip.user.model.MailDto;
 import com.ssafy.enjoytrip.user.model.UserDto;
 
 public interface UserService {
@@ -17,9 +18,19 @@ public interface UserService {
 
 	String findPassword(String id) throws Exception;
 
-	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
+	void saveRefreshToken(String userid, String refreshToken) throws Exception;
 
-	public Object getRefreshToken(String userid) throws Exception;
+	Object getRefreshToken(String userid) throws Exception;
 
-	public void deleRefreshToken(String userid) throws Exception;
+	void deleRefreshToken(String userid) throws Exception;
+
+	String createMailAndChangePassword(String userEmail) throws Exception;
+	
+//	MailDto createMailAndChangePassword(String userEmail) throws Exception;
+	
+	int updatePassword(String str, String userEmail) throws Exception;
+
+	String getTempPassword();
+
+	void mailSend(MailDto mailDto);
 }
