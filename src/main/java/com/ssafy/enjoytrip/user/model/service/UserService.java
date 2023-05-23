@@ -24,10 +24,8 @@ public interface UserService {
 
 	void deleRefreshToken(String userid) throws Exception;
 
-	String createMailAndChangePassword(String userEmail) throws Exception;
-	
-//	MailDto createMailAndChangePassword(String userEmail) throws Exception;
-	
+	MailDto createMailAndChangePassword(String userEmail) throws Exception;
+
 	int updatePassword(String str, String userEmail) throws Exception;
 
 	String getTempPassword();

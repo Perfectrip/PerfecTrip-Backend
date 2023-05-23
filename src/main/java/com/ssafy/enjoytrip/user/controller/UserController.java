@@ -42,6 +42,7 @@ public class UserController {
 	@Autowired
 	private JwtServiceImpl jwtService;
 
+	@Autowired
 	private UserService userService;
 
 	@Autowired
@@ -196,16 +197,14 @@ public class UserController {
 	@Transactional
 	@PutMapping("/findpassword")
 	public ResponseEntity<?> sendEmail(@RequestBody UserDto userDto) throws Exception {
-		String pw = userService.createMailAndChangePassword(userDto.getEmail());
-//        MailDto dto = userService.createMailAndChangePassword(userDto.getEmail()); // or try - catch 사용
-//		logger.debug("보낼 메일 정보 : " + dto);
+		MailDto dto = userService.createMailAndChangePassword(userDto.getEmail());
+		logger.debug("보낼 메일 정보 : " + dto);
 
-		if (pw != null) {
-			// 일단 잠정적 폐기...
-			// userService.mailSend(dto);
-			return new ResponseEntity<String>(pw, HttpStatus.OK);
+		if (dto != null) {
+			userService.mailSend(dto);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
 	}
 
 }
