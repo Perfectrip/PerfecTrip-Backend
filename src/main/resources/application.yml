@@ -15,6 +15,15 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+  mail: 
+    host: smtp.naver.com 
+    port: 465
+    username: phsk710@naver.com
+    password: 
+    properties: 
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
 
 #mybatis setting
 mybatis:
