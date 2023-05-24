@@ -70,7 +70,7 @@ public class HotPlaceDaoTest {
 	public void 게시글목록테스트() throws SQLException {
 		HotPlaceParamDto param = new HotPlaceParamDto();
 		// 원하는 페이지 번호
-		int pg = 1;
+		int pg = 2;
 		param.setPg(pg);
 		int start = param.getPg() == 0 ? 0 : (param.getPg() - 1) * param.getSpp();
 		param.setStart(start);
