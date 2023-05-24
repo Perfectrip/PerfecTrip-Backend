@@ -30,7 +30,7 @@ import com.ssafy.enjoytrip.planboard.model.mapper.BoardMapper;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PlanBoardDaoTest {
-	private static final Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(PlanBoardDaoTest.class);
 
 	@BeforeClass
 	public static void beforeClass() {

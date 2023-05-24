@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.enjoytrip.hotplace.model.mapper.CommentMapper">
+
+	<resultMap type="commentDto" id="comment">
+		<result column="comment_id" property="commentId" />
+		<result column="content_id" property="contentId" />
+		<result column="user_id" property="userId" />
+		<result column="comment_text" property="commentText" />
+		<result column="created_at" property="createdTime" />
+	</resultMap>
+
+	<insert id="writeComment" parameterType="commentDto">
+		insert into
+		comments(content_id, user_id, comment_text, created_at)
+		value(#{contentId}, #{userId}, #{commentText}, now());
+	</insert>
+
+	<select id="listComment" parameterType="int" resultMap="comment">
+		select
+		comment_id, content_id, user_id,
+		comment_text,
+		case when
+		date_format(created_at,
+		'%Y%m%d') = date_format(now(), '%Y%m%d')
+		then
+		date_format(created_at, '%H:%i:%s')
+		else date_format(created_at,
+		'%y.%m.%d')
+		end created_at
+		from comments
+		where content_id = #{contentId}
+		order by comment_id desc;
+	</select>
+
+	<select id="getTotalCommentCount" parameterType="int"
+		resultType="int">
+		select count(comment_id)
+		from comments
+		where content_id =
+		#{contentId}
+	</select>
+
+	<update id="modifyComment" parameterType="commentDto">
+		update comments
+		set
+		comment_text = #{commentText}
+		where comment_id = #{commentId}
+	</update>
+
+	<delete id="deleteComment" parameterType="int">
+		delete from comments
+		where comment_id = #{commentId}
+	</delete>
+
+</mapper>

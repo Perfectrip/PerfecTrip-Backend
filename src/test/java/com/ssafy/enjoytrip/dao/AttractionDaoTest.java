@@ -26,7 +26,7 @@ import com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AttractionDaoTest {
-private static final Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
+private static final Logger logger = LoggerFactory.getLogger(AttractionDaoTest.class);
 	
 	@BeforeClass
 	public static void beforeClass() {
