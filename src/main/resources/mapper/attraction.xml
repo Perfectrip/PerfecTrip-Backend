@@ -2,91 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper">
-	
+<mapper
+	namespace="com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper">
+
 	<resultMap type="attractionDto" id="attraction">
-		<result column="content_id" property="contentId"/>
-		<result column="title" property="title"/>
-		<result column="addr1" property="addr1"/>
-		<result column="first_image" property="firstImage"/>
-		<result column="latitude" property="latitude"/>
-		<result column="longitude" property="longitude"/>
-		<result column="overview" property="overview"/>	
+		<result column="content_id" property="contentId" />
+		<result column="title" property="title" />
+		<result column="addr1" property="addr1" />
+		<result column="first_image" property="firstImage" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="overview" property="overview" />
 	</resultMap>
-	
+
 	<select id="getSido" resultType="sidoGugunCodeDto">
-		select sido_code sidoCode, sido_name sidoName
+		select sido_code sidoCode,
+		sido_name sidoName
 		from sido
 		order by sidoCode
 	</select>
-	
-	<select id="getGugunInSido" parameterType="string" resultType="sidoGugunCodeDto">
-		select gugun_code gugunCode, gugun_name gugunName 
+
+	<select id="getGugunInSido" parameterType="string"
+		resultType="sidoGugunCodeDto">
+		select gugun_code gugunCode, gugun_name gugunName
 		from gugun
 		where sido_code = #{sido}
 		order by gugunName;
 	</select>
-	
+
 	<!-- 모든 관광지 정보 -->
-	<resultMap type="attractionDto" id="attractionAll" extends="attraction">
-		<result column="content_type_id" property="contentTypeId"/>
-		
-		<result column="zipcode" property="zipCode"/>
-		<result column="first_image2" property="firstImage2"/>
-		<result column="readcount" property="readCount"/>
-		
-		<result column="latitude" property="latitude"/>
-		<result column="longitude" property="longitude"/>
+	<resultMap type="attractionDto" id="attractionAll"
+		extends="attraction">
+		<result column="content_type_id" property="contentTypeId" />
+
+		<result column="zipcode" property="zipCode" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="readcount" property="readCount" />
+
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
 	</resultMap>
 
-	<select id="getAttraction" parameterType="String" resultMap="attraction">
-		select ai.content_id, ai.title, ai.addr1, ai.first_image, ai.latitude, ai.longitude, ad.overview
-		from attraction_info ai, attraction_description ad
+	<select id="getAttraction" parameterType="String"
+		resultMap="attraction">
+		select ai.content_id, ai.title, ai.addr1, ai.first_image,
+		ai.latitude, ai.longitude, ad.overview
+		from attraction_info ai,
+		attraction_description ad
 		where ai.content_id = ad.content_id
-		and ai.content_id = #{contentId}
+		and
+		ai.content_id = #{contentId}
 	</select>
-	
-	<select id="searchAttractionBySidoAndGugunAndContentTypeId" resultMap="attractionAll">
-		select ai.content_id, ai.content_type_id, ai.title, ai.addr1, ai.zipcode, ai.first_image, ai.first_image2, ai.readcount, ai.latitude, ai.longitude, ad.overview
-		from attraction_info ai, attraction_description ad
+
+	<select id="searchAttractionBySidoAndGugunAndContentTypeId"
+		resultMap="attractionAll">
+		select ai.content_id, ai.content_type_id, ai.title, ai.addr1,
+		ai.zipcode, ai.first_image, ai.first_image2, ai.readcount,
+		ai.latitude, ai.longitude, ad.overview
+		from attraction_info ai,
+		attraction_description ad
 		where ai.content_id = ad.content_id
-		and ai.addr1 like concat('%', (select sido_name from sido where sido_code = #{sidoCode}), '%')
-		and ai.addr1 like concat('%', (select gugun_name from gugun where gugun_code = #{gugunCode} and sido_code = #{sidoCode}), '%')
+		and
+		ai.addr1 like concat('%', (select sido_name from sido where sido_code
+		= #{sidoCode}), '%')
+		and ai.addr1 like concat('%', (select gugun_name
+		from gugun where gugun_code = #{gugunCode} and sido_code =
+		#{sidoCode}), '%')
 		<if test="contentTypeId != 100">
 			and ai.content_type_id = #{contentTypeId}
 		</if>
 	</select>
-	
+
 	<select id="searchAttractionByKeyword" resultMap="attractionAll">
-		select ai.content_id, ai.content_type_id, ai.title, ai.addr1, ai.zipcode, ai.first_image, ai.first_image2, ai.readcount, ai.latitude, ai.longitude, ad.overview
-		from attraction_info ai, attraction_description ad
+		select
+		ai.content_id, ai.content_type_id, ai.title, ai.addr1, ai.zipcode,
+		ai.first_image, ai.first_image2, ai.readcount, ai.latitude,
+		ai.longitude, ad.overview
+		from attraction_info ai,
+		attraction_description ad
 		where ai.content_id = ad.content_id
-		and ai.addr1 like concat('%', (select sido_name from sido where sido_code = #{sidoCode}), '%')
-		and ai.addr1 like concat('%', (select gugun_name from gugun where gugun_code = #{gugunCode} and sido_code = #{sidoCode}), '%')
+		and
+		ai.addr1 like concat('%', (select sido_name from sido where sido_code
+		= #{sidoCode}), '%')
+		and ai.addr1 like concat('%', (select gugun_name
+		from gugun where gugun_code = #{gugunCode} and sido_code =
+		#{sidoCode}), '%')
 		and ai.title like concat('%', #{keyword}, '%')
 	</select>
 
-	
-<!-- 	<select id="getUser" parameterType="String" resultMap="userAll">
-		select id, password, email, name, age
-		from user
-		where id = #{id}
-	</select>
-	
-	<update id="updateUser" parameterType="userDto">
-		update user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="password != null">password = #{password},</if>
-			<if test="email != null">email = #{email},</if>
-			<if test="name != null">name = #{name},</if>
-			<if test="age != null">age = #{age},</if>
-		</trim>
-		where id = #{id}
-	</update>
-	
-	<delete id="deleteUser" parameterType="String">
-		delete from user
-		where id = #{id}
-	</delete> -->
-	
+
+	<!-- <select id="getUser" parameterType="String" resultMap="userAll"> select 
+		id, password, email, name, age from user where id = #{id} </select> <update 
+		id="updateUser" parameterType="userDto"> update user <trim prefix="set" suffixOverrides=","> 
+		<if test="password != null">password = #{password},</if> <if test="email 
+		!= null">email = #{email},</if> <if test="name != null">name = #{name},</if> 
+		<if test="age != null">age = #{age},</if> </trim> where id = #{id} </update> 
+		<delete id="deleteUser" parameterType="String"> delete from user where id 
+		= #{id} </delete> -->
+
 </mapper>

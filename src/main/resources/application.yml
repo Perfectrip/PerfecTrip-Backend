@@ -19,7 +19,7 @@ spring:
     host: smtp.naver.com 
     port: 465
     username: phsk710@naver.com
-    password: 
+    password: asd
     properties: 
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
