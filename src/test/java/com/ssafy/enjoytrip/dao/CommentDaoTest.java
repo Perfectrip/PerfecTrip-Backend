@@ -23,8 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ssafy.enjoytrip.hotplace.model.CommentDto;
 import com.ssafy.enjoytrip.hotplace.model.mapper.CommentMapper;
-import com.ssafy.enjoytrip.planboard.model.BoardParameterDto;
-import com.ssafy.enjoytrip.planboard.model.PlanBoardDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
