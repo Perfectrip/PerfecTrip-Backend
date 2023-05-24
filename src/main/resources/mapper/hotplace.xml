@@ -25,7 +25,7 @@
 	<select id="listHotPlace" parameterType="map"
 		resultMap="hotplace">
 		select content_id, content_type_id, title, addr1, zipcode, tel, first_image, readcount, latitude, longitude, overview 
-		from hotplace
+		from hotplace_sorted_by_readcount
 		limit #{start}, #{spp}
 	</select>
 
