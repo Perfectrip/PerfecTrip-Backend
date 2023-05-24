@@ -28,6 +28,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
 	@Override
 	public HotPlaceDto getHotPlace(int contentId) throws Exception {
+		hotPlaceMapper.increaseReadCount(contentId);
 		return hotPlaceMapper.getHotPlace(contentId);
 	}
 

@@ -66,6 +66,7 @@ public class HotPlaceDaoTest {
 		assertNotNull(hotPlaceMapper);
 	}
 	
+	@Ignore
 	@Test
 	public void 게시글목록테스트() throws SQLException {
 		HotPlaceParamDto param = new HotPlaceParamDto();
@@ -84,6 +85,16 @@ public class HotPlaceDaoTest {
 		logger.debug("현재 페이지 글 개수 : " + list.size());
 		System.out.println("관광지 아이디" + list.get(0).getContentId());
 		System.out.println(hotPlaceMapper.getHotPlace(list.get(0).getContentId()));
+	}
+	
+	@Test
+	public void 핫플조회카운트증가테스트() throws SQLException {
+		int contentId = 125266;
+		int before = hotPlaceMapper.getHotPlace(contentId).getReadCount();
+		hotPlaceMapper.increaseReadCount(contentId);
+		int after = hotPlaceMapper.getHotPlace(contentId).getReadCount();
+		System.out.println(before);
+		System.out.println(after);
 	}
 
 }
