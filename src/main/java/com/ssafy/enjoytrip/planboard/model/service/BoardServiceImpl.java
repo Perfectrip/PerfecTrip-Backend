@@ -16,7 +16,7 @@ import com.ssafy.enjoytrip.util.SizeConstant;
 public class BoardServiceImpl implements BoardService {
 
 	private BoardMapper boardMapper;
-	
+
 	@Autowired
 	public BoardServiceImpl(BoardMapper boardMapper) {
 		super();
@@ -25,7 +25,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public boolean writeArticle(PlanBoardDto boardDto) throws Exception {
-		if(boardDto.getTitle() == null || boardDto.getContent() == null) {
+		if (boardDto.getTitle() == null || boardDto.getContent() == null) {
 			throw new Exception();
 		}
 		return boardMapper.writeArticle(boardDto) == 1;
@@ -53,11 +53,6 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.modifyArticle(boardDto) == 1;
 	}
 
-//	@Override
-//	public void deleteArticle(int articleNo, String path) throws Exception {
-//		boardMapper.deleteArticle(articleNo);
-//	}
-	
 	@Override
 	public boolean deleteArticle(int articleNo) throws Exception {
 		return boardMapper.deleteArticle(articleNo) == 1;

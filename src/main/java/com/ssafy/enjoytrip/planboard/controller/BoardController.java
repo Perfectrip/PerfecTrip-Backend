@@ -45,8 +45,6 @@ public class BoardController {
 	}
 
 	@PostMapping
-//	public String write(@RequestBody PlanBoardDto boardDto, @RequestParam("upfile") MultipartFile[] files,
-//			HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
 	public ResponseEntity<String> write(
 			@RequestBody @ApiParam(value = "게시글 정보.", required = true) PlanBoardDto boardDto) {
 		logger.debug("write boardDto : {}", boardDto);
@@ -57,33 +55,6 @@ public class BoardController {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
-
-//		FileUpload 관련 설정.
-//		logger.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
-//		if (!files[0].isEmpty()) {
-//			String today = new SimpleDateFormat("yyMMdd").format(new Date());
-//			String saveFolder = uploadPath + File.separator + today;
-//			logger.debug("저장 폴더 : {}", saveFolder);
-//			File folder = new File(saveFolder);
-//			if (!folder.exists())
-//				folder.mkdirs();
-//			List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>();
-//			for (MultipartFile mfile : files) {
-//				FileInfoDto fileInfoDto = new FileInfoDto();
-//				String originalFileName = mfile.getOriginalFilename();
-//				if (!originalFileName.isEmpty()) {
-//					String saveFileName = UUID.randomUUID().toString()
-//							+ originalFileName.substring(originalFileName.lastIndexOf('.'));
-//					fileInfoDto.setSaveFolder(today);
-//					fileInfoDto.setOriginalFile(originalFileName);
-//					fileInfoDto.setSaveFile(saveFileName);
-//					logger.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
-//					mfile.transferTo(new File(folder, saveFileName));
-//				}
-//				fileInfos.add(fileInfoDto);
-//			}
-//			boardDto.setFileInfos(fileInfos);
-//		}
 	}
 
 	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
@@ -138,27 +109,24 @@ public class BoardController {
 		logger.info("modifyArticle - 호출 {}", boardDto);
 		try {
 			boardService.modifyArticle(boardDto);
-//			redirectAttributes.addAttribute("pgno", map.get("pgno"));
-//			redirectAttributes.addAttribute("key", map.get("key"));
-//			redirectAttributes.addAttribute("word", map.get("word"));
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_ACCEPTABLE);
 		}
 
 	}
-	
+
 	@ApiOperation(value = "게시판 글삭제", notes = "글번호에 해당하는 게시글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@DeleteMapping("/{articleno}")
-	public ResponseEntity<?> delete(@PathVariable("articleno") @ApiParam(value = "살제할 글의 글번호.", required = true) int articleNo) {
+	public ResponseEntity<?> delete(
+			@PathVariable("articleno") @ApiParam(value = "살제할 글의 글번호.", required = true) int articleNo) {
 		logger.debug("delete articleNo : {}", articleNo);
-		
+
 		try {
 			if (boardService.deleteArticle(articleNo)) {
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.user.model.MailDto;
@@ -139,12 +138,6 @@ public class UserController {
 
 	@GetMapping("/logout/{userid}")
 	public ResponseEntity<?> logoutUser(@PathVariable("userid") String userid) {
-//		try {
-//			session.removeAttribute("userinfo");
-//			return new ResponseEntity<String>("로그아웃 성공!!!", HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<String>("로그인 실패!!!", HttpStatus.NOT_ACCEPTABLE);
-//		}
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
